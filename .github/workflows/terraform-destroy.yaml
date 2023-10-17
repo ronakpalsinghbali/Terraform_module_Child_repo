@@ -1,0 +1,39 @@
+name: "Terraform workflow for Destroy"
+
+on: workflow_dispatch
+
+jobs:
+  terraform:
+    name: "Terraform Destroy"
+    runs-on: ubuntu-latest
+    env:
+      AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+      AWS_SECRET_ACCESS_KEY : ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+      AWS_SESSION_TOKEN : ${{ secrets.AWS_SESSION_TOKEN }}
+      TF_WORKSPACE: testing
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+    
+      - name: Setup Terraform
+        uses: hashicorp/setup-terraform@v2
+      
+      - name: Terraform Format
+        id: fmt
+        run: terraform fmt 
+      
+      - name: Terraform Workspace
+        id: workspce
+        run: terraform workspace show
+
+      - name: Terraform Init
+        id: init
+        run: terraform init -backend-config="config-backend.tfbackend" 
+      
+      - name: Terraform Plan
+        id: plan
+        run: terraform plan 
+      
+      # - name: Terraform Destroy
+      #   run: terraform Destroy -auto-approve

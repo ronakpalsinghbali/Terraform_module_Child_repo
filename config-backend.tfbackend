@@ -1,0 +1,4 @@
+bucket         = "ronak-state-locking-bucket"
+key            = "ronak/terraform/terraform.tfstate"
+region         = "us-east-1"
+dynamodb_table = "ronak-state-locking-table"
